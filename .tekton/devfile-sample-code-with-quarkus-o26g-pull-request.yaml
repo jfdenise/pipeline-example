@@ -155,7 +155,7 @@ spec:
         workspace: workspace
     - name: wildfly-s2i-build
       taskRef:
-        bundle: quay.io/jdenise/wildfly-s2i-build-task:latest@sha256:2896fb8d9839b00444b9de979b9dbd5b9b7936f4c333af20528f8e5b0d35d7af
+        bundle: quay.io/jdenise/wildfly-s2i-build-task@sha256:51778357feaa5c30138a37f769b7c75c7a1444f146c201fb816d7fd7e2aac85e
         name: wildfly-s2i-build-task
       runAfter: 
         - prefetch-dependencies
