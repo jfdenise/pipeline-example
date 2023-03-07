@@ -13,7 +13,7 @@ metadata:
     appstudio.openshift.io/application: demo
     appstudio.openshift.io/component: devfile-sample-code-with-quarkus-gwwp
     pipelines.appstudio.openshift.io/type: build
-  name: devfile-sample-code-with-quarkus-gwwp-on-pull-request
+  name: FOO-PULL
   namespace: jdenise-tenant
 spec:
   params:
