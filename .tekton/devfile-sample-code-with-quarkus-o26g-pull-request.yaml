@@ -171,7 +171,7 @@ spec:
       - name: IMAGE
         value: $(params.output-image)
       - name: DOCKERFILE
-        value: $(params.dockerRegistry)/$(params.namespace)/$(params.imageName)
+        value: $(tasks.wildfly-s2i-build.results.dockerFile)
       - name: CONTEXT
         value: $(tasks.wildfly-s2i-build.results.dockerBuildContext)
       - name: DOCKER_AUTH
