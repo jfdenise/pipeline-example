@@ -153,14 +153,27 @@ spec:
       workspaces:
       - name: source
         workspace: workspace
+    - name: wildfly-s2i-build
+      taskRef:
+        bundle: quay.io/jdenise/wildfly-s2i-build-task:latest@sha256:2896fb8d9839b00444b9de979b9dbd5b9b7936f4c333af20528f8e5b0d35d7af
+        name: wildfly-s2i-build-task
+      runAfter: 
+        - prefetch-dependencies
+      workspaces:
+        - name: sources
+          workspace: workspace
+        - name: maven-cache
+          workspace: workspace
+        - name: server-cache
+          workspace: workspace
     - name: build-container
       params:
       - name: IMAGE
         value: $(params.output-image)
       - name: DOCKERFILE
-        value: $(params.dockerfile)
+        value: $(params.dockerRegistry)/$(params.namespace)/$(params.imageName)
       - name: CONTEXT
-        value: $(params.path-context)
+        value: $(tasks.wildfly-s2i-build.results.dockerBuildContext)
       - name: DOCKER_AUTH
         value: $(tasks.init.results.container-registry-secret)
       - name: HERMETIC
