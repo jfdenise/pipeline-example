@@ -25,6 +25,8 @@ spec:
     value: .
   - name: revision
     value: '{{revision}}'
+  - name: skip-checks
+    value: true
   pipelineSpec:
     finally:
     - name: show-summary
