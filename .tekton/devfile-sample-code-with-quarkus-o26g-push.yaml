@@ -16,8 +16,6 @@ metadata:
   namespace: jdenise-tenant
 spec:
   params:
-  - name: dockerfile
-    value: src/main/docker/Dockerfile.jvm.staged
   - name: git-url
     value: '{{repo_url}}'
   - name: output-image
@@ -53,10 +51,6 @@ spec:
     - default: .
       description: The path to your source code
       name: path-context
-      type: string
-    - default: Dockerfile
-      description: Path to the Dockerfile
-      name: dockerfile
       type: string
     - default: "false"
       description: Force rebuild image
@@ -152,14 +146,27 @@ spec:
       workspaces:
       - name: source
         workspace: workspace
+    - name: wildfly-s2i-build
+      taskRef:
+        bundle: quay.io/jdenise/wildfly-s2i-build-task@sha256:51778357feaa5c30138a37f769b7c75c7a1444f146c201fb816d7fd7e2aac85e
+        name: wildfly-s2i-build-task
+      runAfter: 
+        - prefetch-dependencies
+      workspaces:
+        - name: sources
+          workspace: workspace
+        - name: maven-cache
+          workspace: workspace
+        - name: server-cache
+          workspace: workspace
     - name: build-container
       params:
       - name: IMAGE
         value: $(params.output-image)
       - name: DOCKERFILE
-        value: $(params.dockerfile)
+        value: $(tasks.wildfly-s2i-build.results.dockerFile)
       - name: CONTEXT
-        value: $(params.path-context)
+        value: $(tasks.wildfly-s2i-build.results.dockerBuildContext)
       - name: DOCKER_AUTH
         value: $(tasks.init.results.container-registry-secret)
       - name: HERMETIC
@@ -167,7 +174,7 @@ spec:
       - name: PREFETCH_INPUT
         value: $(params.prefetch-input)
       runAfter:
-      - prefetch-dependencies
+      - wildfly-s2i-build
       taskRef:
         bundle: quay.io/redhat-appstudio-tekton-catalog/task-buildah:0.1@sha256:ef88965ddc6deffb08e3d803b3c7db1bf2260b627599b1505ecdd97472cd121d
         name: buildah
