@@ -9,10 +9,10 @@ metadata:
     pipelinesascode.tekton.dev/on-target-branch: '[main,master]'
   creationTimestamp: null
   labels:
-    appstudio.openshift.io/application: demo
-    appstudio.openshift.io/component: devfile-sample-code-with-quarkus-o26g
+    appstudio.openshift.io/application: wildfly-test
+    appstudio.openshift.io/component: wildfly-app
     pipelines.appstudio.openshift.io/type: build
-  name: devfile-sample-code-with-quarkus-o26g-on-push
+  name: wildfly-app-on-push
   namespace: jdenise-tenant
 spec:
   params:
